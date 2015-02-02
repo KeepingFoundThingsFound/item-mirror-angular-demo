@@ -286,5 +286,52 @@ but we aren't exactly interested in keeping it. Let's replace the
 Yeoman stuff with a welcome page that explains what this application
 is, and a big button that actually starts the application.
 
-Everything starts at `app\index.html`, so take a peek into there to
-see how things function.
+Everything starts at `app/index.html`, so take a peek into there to
+see how things function. Here we essentially have access to the header
+and footer of the application. However, when we start the application
+there's all of this extra stuff from Yeoman. Where is that?
+
+Well between the header and footer there's a single directive:
+`ng-view`, and this loads whatever section of the application we tell
+it to based on our location. Pretty nifty!
+
+The actual content that it's loading is coming from
+`app/views/main.html`. If you edit that file then you'll instantly see
+the changes reflected. Along with the view is a controller at
+`app/scripts/controllers/main.js`. We aren't going to tinker around
+with the scope for our welcome area, so just leave that alone for now.
+
+These routes are defined in `app/scripts/app.js`. Since we'll just be using the main and explorer routes, let's get rid of the 'About' route, and remove the controller and view that comes with it.
+
+```bash
+rm app/scripts/controllers/about.js
+rm app/views/about.html
+```
+
+- Edit the pills in the header so that theres just two: welcome and explorer
+- Make sure that ng-ref for explorer pill is also defined
+
+Edit the HTML of the main view:
+
+- Get rid of the default Yeoman stuff
+- Add a big green button in the middle, and have it link to the explorer view: `ng-ref="#/explorer"
+
+Now we're going to create a route with Yeoman. A route will has a controller and a view (and tests).
+
+```bash
+yo angular:route explorer
+```
+
+If everything's working like it should, then you should be able to
+click the button in the middle of the screen and it will update the
+view on the page. The pills should also work for navigating between
+views. You can even go back in history and it will go to the previous
+view; a really useful feature of routes.
+
+If it isn't working like it should, take a look at the console to see
+if you can pinpoint any errors.
+
+From here, you can start customizing the CSS if you desire and even
+add animations. Angular's documentation gives examples of using
+animations for almost all of it's directives, and these play nicely
+with bootstrap. Edit main sass file `app/styles/main.scss`.
