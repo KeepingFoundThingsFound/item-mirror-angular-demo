@@ -68,6 +68,8 @@ angular.module('itemMirrorAngularDemoApp')
     // FolderSelect, so that we can instead choose a different 'root'
     // itemMirror, or use a different set of drivers
     function constructRootMirror(dropboxClient) {
+      console.log("Constructing Root Mirror...");
+
       var dropboxXooMLUtility;
       var dropboxItemUtility;
       var mirrorSyncUtility;
@@ -97,6 +99,7 @@ angular.module('itemMirrorAngularDemoApp')
     }
 
     function construct(options) {
+      console.log("Constructing...");
       var deferred = $q.defer();
 
       new ItemMirror(options, function(error, IM) {

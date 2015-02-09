@@ -17,6 +17,13 @@ angular.module('itemMirrorAngularDemoApp')
       secret: 'kkgcohccllqj3b4'
     };
     var dropboxClient = new Dropbox.Client(dropboxClientCredentials);
+    // This overrides the default redirection method, and seems to be the only
+    // way to get it working with Angular
+    dropboxClient.authDriver(new Dropbox.AuthDriver.Popup({
+      // Replace thordev.me with localhost or whatever host you're using for development
+      receiverUrl: "https://thordev.me:9001/misc/oauth_reciever.html"
+    }));
+
     var authenticatedClient = null;
 
     function getClient() {
@@ -31,11 +38,15 @@ angular.module('itemMirrorAngularDemoApp')
       } else {
         console.log('Dropbox authenticating...');
         dropboxClient.authenticate(function (error, client) {
-          if (error) { deferred.reject(error); }
-          authenticatedClient = client;
-          // Need this redirect to prevent digest from entering an infinite loop
-          window.location.href = window.location.href + '#';
-          deferred.resolve(client);
+          if (error) {
+            console.log('Dropbox FAILED to authenticate!');
+            deferred.reject(error);
+          }
+          else {
+            authenticatedClient = client;
+            console.log('Dropbox authenticated');
+            deferred.resolve(client);
+          }
         });
       }
       return deferred.promise;
