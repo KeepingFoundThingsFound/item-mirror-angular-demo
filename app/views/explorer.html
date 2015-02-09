@@ -1,7 +1,21 @@
+<h2>Fragment: {{mirror.displayName}}</h2>
+<div ng-show="mirror.displayName != 'Dropbox'">
+  <label>Display Name</label>
+  <input ng-model="mirror.displayName"
+  ng-model-options="{ getterSetter: true }"
+  type="text"/>
+</div>
+
+<h1>Assoc Code</h1>
+<pre>{{mirror.associations}}</pre>
 <h1>Associations</h1>
-<pre>{{associations}}</pre>
 
 <div ng-repeat="assoc in associations">
-  <h1>Association</h1>
+  <h3>{{assoc.displayText}}</h3>
   <pre>{{assoc}}</pre>
+  <p>
+    <strong>GUID: </strong> {{assoc.guid}} </br>
+    <button ng-click="deleteAssoc(assoc.guid)" class="btn btn-danger">DELETE</button>
+    <button class="btn btn-default" ng-click="navigate(assoc.guid)" ng-show="assoc.isGrouping">Enter</button>
+  </p>
 </div>

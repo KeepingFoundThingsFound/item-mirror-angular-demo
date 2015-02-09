@@ -21,7 +21,7 @@ angular.module('itemMirrorAngularDemoApp')
     // way to get it working with Angular
     dropboxClient.authDriver(new Dropbox.AuthDriver.Popup({
       // Replace thordev.me with localhost or whatever host you're using for development
-      receiverUrl: "https://thordev.me:9001/misc/oauth_reciever.html"
+      receiverUrl: 'https://thordev.me:9001/misc/oauth_reciever.html'
     }));
 
     var authenticatedClient = null;

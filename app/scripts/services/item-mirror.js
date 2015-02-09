@@ -34,20 +34,27 @@ angular.module('itemMirrorAngularDemoApp')
     // variables. For one way, you can just set a property
     var associations;
 
+    // This is the association wrapping function. In order to allow data
+    // binding for custom namespace attributes they must be manually inserted
+    // here. For writable attributes a getter / setter must be defined.
+    //
+    // TODO: Create an injection function that will add to the wrappers so
+    // that they can be defined outside of this file, allowing a separation of
+    // core item mirror attributes and namespace attributes.
     function assocWrapper(guid) {
       return {
         guid: guid,
         get displayText(){ return mirror.getAssociationDisplayText(guid); },
         set displayText(txt){ mirror.setAssociationDisplayText(guid, txt); },
-        get photoURI(){ return mirror.getAssociationNamespaceAttribute('uri', guid, 'pictureProjector'); },
-        set photoURI(val){ mirror.setAssociationNamespaceAttribute('uri', val, guid, 'pictureProjector'); },
-        get photoWidth(){ return mirror.getAssociationNamespaceAttribute('width', guid, 'pictureProjector'); },
-        set photoWidth(val){ mirror.setAssociationNamespaceAttribute('width', val, guid, 'pictureProjector'); },
-        get photoHeight(){ return mirror.getAssociationNamespaceAttribute('height', guid, 'pictureProjector'); },
-        set photoHeight(val){ mirror.setAssociationNamespaceAttribute('height', val, guid, 'pictureProjector'); },
         localItem: mirror.getAssociationLocalItem(guid),
         associatedItem: mirror.getAssociationAssociatedItem(guid),
-        isGrouping: mirror.isAssociationAssociatedItemGrouping(guid)
+        isGrouping: mirror.isAssociationAssociatedItemGrouping(guid),
+        // This shows how to define a custom rw attribute. It simply wraps the
+        // item mirror methods with the namespace and the attribute.
+        // 'namespace' should be replaced likely with the name of your app
+        // 'key' should be replaced with the name of the attribute
+        get exampleNSAttr(){ return mirror.getAssociationNamespaceAttribute('key', guid, 'namespace'); },
+        set exampleNSAttr(val){ mirror.setAssociationNamespaceAttribute('key', val, guid, 'namespace'); }
       };
     }
 
@@ -58,6 +65,7 @@ angular.module('itemMirrorAngularDemoApp')
     // to be called during any type of sync operation when
     // associations can be created or deleted in bulk
     function updateAssociations() {
+      console.log('updating associations');
       associations = mirror.listAssociations().map(function(guid) {
         return assocWrapper(guid);
       });
@@ -68,8 +76,6 @@ angular.module('itemMirrorAngularDemoApp')
     // FolderSelect, so that we can instead choose a different 'root'
     // itemMirror, or use a different set of drivers
     function constructRootMirror(dropboxClient) {
-      console.log("Constructing Root Mirror...");
-
       var dropboxXooMLUtility;
       var dropboxItemUtility;
       var mirrorSyncUtility;
@@ -99,7 +105,6 @@ angular.module('itemMirrorAngularDemoApp')
     }
 
     function construct(options) {
-      console.log("Constructing...");
       var deferred = $q.defer();
 
       new ItemMirror(options, function(error, IM) {
@@ -183,15 +188,18 @@ angular.module('itemMirrorAngularDemoApp')
       },
 
       deleteAssociation: function(guid) {
+        console.log('Delete Association Called');
+        console.log('GUID: ' + guid);
         var deferred = $q.defer();
 
         mirror.deleteAssociation(guid, function(error) {
-          if (error) { deferred.reject(error); }
+          if (error) {
+            deferred.reject(error); }
           else {
             var guids = associations.map(function(assoc) { return assoc.guid; });
             var delIdx = guids.indexOf(guid);
             // Removes the deleted association wrapper
-            // associations.splice(delIdx, 1);
+            associations.splice(delIdx, 1);
             updateAssociations();
             deferred.resolve();
           }
