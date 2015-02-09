@@ -229,7 +229,7 @@ $ bower install dropbox-build --save
 
 Angular is a very test driven framework, and it provides the tools for
 us to write tests for _everything_ we write. Due to the prototypical
-nature of the ItemMirro project, test's aren't exactly something that
+nature of the ItemMirror project, test's aren't exactly something that
 are ironed out for our services, and it's not expected that you create
 tests for everything, but I'll give a short introduction as to how and
 why.
