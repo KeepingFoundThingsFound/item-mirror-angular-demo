@@ -225,6 +225,30 @@ right now.
 ```bash
 $ bower install dropbox-build --save
 ```
+
+#### Dropbox Application Authentication
+
+In addition to having users authenticate their own dropbox accounts, we need
+to provide dropbox with authentication for our application. The driver itself
+is the application from the perspective of dropbox, and it must be properly
+registered or it won't function.
+
+Go to [the dropbox app portal](https://www.dropbox.com/developers/apps) and
+create an application with full dropbox permissions. After creating the
+application, you then need to specify the redirect URI. This needs to exactly
+match what you use in your application. If you're developing locally then it's
+fine to use a regular HTTP redirect, however if you develop remotely then you
+must also ensure that the redirect is over __HTTPS__.
+
+If for some reason the redirect isn't an exact match, then you will get an error during the Oauth2 process, and it will specify that the redirect doesn't match.
+
+For this application, the redirect that I use for remote development is: `https://thordev.me:9001/misc/oauth_reciever.html`. Note how even the protocol and port need to be specified in order for it to work properly. You can however, specify multiple redirect URIs, to meet the needs of different development environments.
+
+The dropbox-auth service also needs to know about this in order to function properly. Edit the service and update it so that:
+
+- The authDriver uses the proper redirect URL, and
+- The client credentials match that of your dropbox application
+
 ### An Aside on Testing within Angular
 
 Angular is a very test driven framework, and it provides the tools for
