@@ -359,3 +359,117 @@ From here, you can start customizing the CSS if you desire and even
 add animations. Angular's documentation gives examples of using
 animations for almost all of it's directives, and these play nicely
 with bootstrap. Edit main sass file `app/styles/main.scss`.
+
+### Working with ItemMirror Data
+
+We've partitioned our two routes, but we still don't have any actual data to
+interact with. Let's change that by actually interacting with the data. We'll
+modify our `explorer.js` controller so that it actually can display the data
+we have stored in a dropbox folder.
+
+First, make sure that the `itemMirror` service is loaded as a dependency in
+addition to the `$scope`. Then we initialize the service, and create some
+wrapper functions so that everything will behave properly.
+
+To keep things simple, we'll just add the ability to delete associations, and
+possibly move into the mirror of a grouping item.
+
+
+#### Controller Example
+
+Take a look at the code to see how easy is. Here's the controller:
+
+```javascript
+  	var init = itemMirror.initialize;
+  	init.then(function() {
+      $scope.mirror = itemMirror;
+      $scope.associations = itemMirror.associations;
+
+      // This needs to be called after the service updates the associations.
+      // Angular doesn't watch the scope of the service's associations, so any
+      // updates don't get propogated to the front end.
+      function assocScopeUpdate() {
+        $scope.associations = itemMirror.associations;
+       }
+
+      $scope.deleteAssoc = function(guid) {
+        itemMirror.deleteAssociation(guid).
+        then(assocScopeUpdate);
+      };
+
+      $scope.navigate = function(guid) {
+        itemMirror.navigateMirror(guid).
+        then(assocScopeUpdate);
+      };
+```
+
+Essentially it starts up, and then defines some helper functions that we'll use in the view.
+
+#### View Example
+
+The HTML for the page looks like this:
+
+```html
+<h2>Fragment: {{mirror.displayName}}</h2>
+<div ng-show="mirror.displayName != 'Dropbox'">
+  <label>Display Name</label>
+  <input ng-model="mirror.displayName"
+  ng-model-options="{ getterSetter: true }"
+  type="text"/>
+</div>
+
+<h1>Assoc Code</h1>
+<pre>{{mirror.associations}}</pre>
+<h1>Associations</h1>
+
+<div ng-repeat="assoc in associations">
+  <h3>{{assoc.displayText}}</h3>
+  <pre>{{assoc}}</pre>
+  <p>
+    <strong>GUID: </strong> {{assoc.guid}} </br>
+    <button ng-click="deleteAssoc(assoc.guid)" class="btn btn-danger">DELETE</button>
+    <button class="btn btn-default" ng-click="navigate(assoc.guid)" ng-show="assoc.isGrouping">Enter</button>
+  </p>
+</div>
+```
+
+You could take a look at the HTML and probably make an educated guess as to
+what it looks like because it's so expressive. We title the view with the
+displayName of the fragment, and then below that we add an input box which
+allows us to edit the displayName directly!
+
+Below that we have a list of the associations, this is just for debugging
+purposes and it lists the associations as a json array.
+
+The we get to the actual associations. the `ng-repeat` directive is used to
+tell Angular that it should copy the div for _each_ association in our
+associations array, and then it gives us `assoc` as a binding to the
+association for that section.
+
+We then lay out some basic info about each association. We use the displayText
+of the association as a title, and also lay out any the json form of an
+association for debugging. Each of the attributes listed there are accessible
+for us to use for displaying information or storing information. Custom data
+attributes specific to your application are also possible, and something that
+will be demonstrated later on.
+
+Finally, we have two buttons for each association. The first is a delete
+button. The `ng-click` directive specifies what should happen when the button
+is clicked. In this case it will call the `deleteAssoc` function and pass in
+the guid of the association as the argument. The `deleteAssoc` function was
+defined in our scope, and is needed for the view to properly update. The
+reason for this extra function is explained by the in the comment of the
+controller. Essentially, anytime the associations of the ItemMirror object
+change, it needs a function that makes the change, and then calls a function
+to tell Angular that the scope changed and needs to be update.
+
+This may seem somewhat complicated, but the pattern is also applied to the
+next button, navigate. Here all of the associations are updated because an
+entirely new mirror is being used, so we do the same thing. Call a function,
+this will do the actual work that we require of the service, and once that's
+completed we tell Angular that the associations have updated.
+
+The benefit of this is that as soon as the associations actually change, the
+view updates the changes. So deleting an association will instantly remove it
+from the view. This data driven model is what gives Angular so much power, and
+we can now start using Angular's features to simplify our application.
