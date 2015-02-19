@@ -433,6 +433,8 @@ The HTML for the page looks like this:
 </div>
 ```
 
+#### How it Works
+
 You could take a look at the HTML and probably make an educated guess as to
 what it looks like because it's so expressive. We title the view with the
 displayName of the fragment, and then below that we add an input box which
@@ -473,3 +475,32 @@ The benefit of this is that as soon as the associations actually change, the
 view updates the changes. So deleting an association will instantly remove it
 from the view. This data driven model is what gives Angular so much power, and
 we can now start using Angular's features to simplify our application.
+
+#### Adding Angular Features
+
+Let's take advantage of all the Angular features that are available to
+demonstrate the power of Angular.
+
+##### Filters
+
+In Angular filters are used to reduce the items in an array. Let's add a
+searchbox for our application that will let users search for files in the
+current directory! With Angular, this is simple.
+
+```html
+<h2>Filter Associations</h2>
+Search Name: <input ng-model="search.displayText">
+
+<div ng-repeat="assoc in associations | filter:search.displayText">
+```
+
+This is all that you need to create a functional searchbox. The first two
+lines are new, they specify that there should be some sort of searchbox, and
+that the data we type in will be bound to `search.displayText`. Then we edit
+our associations and add the filter. We specify that we want to filter by the
+displayText, and we instantly have a functional search box, with just 2 lines
+of code!
+
+The Angular filters are highly extensible and can filter by every attribute
+that our association has. Look at the
+[documentation](https://docs.angularjs.org/api/ng/filter/filter) to see how

@@ -10,7 +10,10 @@
 <pre>{{mirror.associations}}</pre>
 <h1>Associations</h1>
 
-<div ng-repeat="assoc in associations">
+<h2>Filter Associations</h2>
+Search Name: <input ng-model="search.displayText">
+
+<div ng-repeat="assoc in associations | filter:search.displayText">
   <h3>{{assoc.displayText}}</h3>
   <pre>{{assoc}}</pre>
   <p>
