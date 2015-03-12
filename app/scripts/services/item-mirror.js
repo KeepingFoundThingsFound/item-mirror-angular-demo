@@ -284,11 +284,15 @@ angular.module('itemMirrorAngularDemoApp')
 
       // Calls the getCreator method of the itemMirror and sets it to that mirror if it isn't null. It's basically a way to go back.
       previous: function() {
+        var deferred = $q.defer();
         var parent = mirror.getCreator();
         if (parent) {
           mirror = parent;
           updateAssociations();
+          deferred.resolve();
         }
+
+        return deferred.promise;
       },
 
       get itemDescribed() { return mirror.getURIforItemDescribed(); }
