@@ -20,8 +20,9 @@ angular.module('itemMirrorAngularDemoApp')
     // This overrides the default redirection method, and seems to be the only
     // way to get it working with Angular
     dropboxClient.authDriver(new Dropbox.AuthDriver.Popup({
-      // Replace thordev.me with localhost or whatever host you're using for development
-      receiverUrl: 'https://thordev.me:9001/misc/oauth_reciever.html'
+      // Replace the reciveUrl with localhost or whatever host you're using for development
+      //reciverUrl: 'http://localhost:9000/misc/oath_reciever.html'
+      receiverUrl: 'https://im-angular-demo.thordev.me/misc/oauth_reciever.html'
     }));
 
     var authenticatedClient = null;
