@@ -49,6 +49,8 @@ angular.module('itemMirrorAngularDemoApp')
         localItem: mirror.getAssociationLocalItem(guid),
         associatedItem: mirror.getAssociationAssociatedItem(guid),
         isGrouping: mirror.isAssociationAssociatedItemGrouping(guid),
+        isPhantom: mirror.isAssociationPhantom(guid),
+
         // This shows how to define a custom rw attribute. It simply wraps the
         // item mirror methods with the namespace and the attribute.
         // 'namespace' should be replaced likely with the name of your app
