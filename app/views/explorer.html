@@ -1,24 +1,49 @@
-<h2>Fragment: {{mirror.displayName}}</h2>
-<div ng-show="mirror.displayName != 'Dropbox'">
-  <label>Display Name</label>
-  <input ng-model="mirror.displayName"
-  ng-model-options="{ getterSetter: true }"
-  type="text"/>
-</div>
+<div class="row">
 
-<h1>Assoc Code</h1>
-<pre>{{mirror.associations}}</pre>
-<h1>Associations</h1>
+  <!-- Association Listing Section -->
+  <div class="col-md-4">
+    <h2>{{mirror.displayName}}</h2>
 
-<h2>Filter Associations</h2>
-Search Name: <input ng-model="search.displayText">
+  <button ng-click="previous()" class="btn btn-default btn-lg">Back</button>
 
-<div ng-repeat="assoc in associations | filter:search.displayText">
-  <h3>{{assoc.displayText}}</h3>
-  <pre>{{assoc}}</pre>
-  <p>
-    <strong>GUID: </strong> {{assoc.guid}} </br>
-    <button ng-click="deleteAssoc(assoc.guid)" class="btn btn-danger">DELETE</button>
-    <button class="btn btn-default" ng-click="navigate(assoc.guid)" ng-show="assoc.isGrouping">Enter</button>
-  </p>
+    <div class="scroll">
+      <div ng-repeat="assoc in associations | filter:search.displayText"
+           ng-click="select(assoc)">
+        <div class="association"
+             ng-class="{'selected': assoc.selected}">
+          <div class="row">
+            <div class="col-md-2">
+              <span ng-show="assoc.isGrouping" class="glyphicon glyphicon-folder-close"></span>
+              <span ng-show="assoc.isPhantom" class="glyphicon glyphicon-link"></span>
+              <span ng-show="!assoc.isGrouping" class="glyphicon glyphicon-file"></span>
+            </div>
+            <div class="col-md-10">
+              <h3>{{assoc.localItem}}</h3>
+            </div>
+          </div> <!-- row -->
+          <div class="row">
+            <!-- Buttons -->
+            <div class="buttons" ng-show="assoc.selected">
+              <button ng-click="deleteAssoc(assoc.guid)" class="btn btn-danger">DELETE</button>
+              <button class="btn btn-default" ng-click="navigate(assoc.guid)" ng-show="assoc.isGrouping">Enter</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Association Editing Section -->
+  <div class="col-md-8">
+    <div class="editor">
+      <h2>Editor</h2>
+
+      <div ng-if="selectedAssoc">
+        <h3>{{selectedAssoc.localItem}}</h3>
+        <pre>{{selectedAssoc}}</pre>
+      </div>
+
+      <textarea></textarea>
+    </div>
+  </div>
 </div>
