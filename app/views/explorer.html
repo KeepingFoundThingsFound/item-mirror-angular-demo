@@ -21,11 +21,13 @@
               <h3>{{assoc.localItem}}</h3>
             </div>
           </div> <!-- row -->
-          <div class="row">
+          <div class="row buttons" ng-show="assoc.selected">
             <!-- Buttons -->
-            <div class="buttons" ng-show="assoc.selected">
-              <button ng-click="deleteAssoc(assoc.guid)" class="btn btn-danger">DELETE</button>
+            <div class="col-md-6">
               <button class="btn btn-default" ng-click="navigate(assoc.guid)" ng-show="assoc.isGrouping">Enter</button>
+            </div>
+            <div class="col-md-6">
+              <button ng-click="deleteAssoc(assoc.guid)" class="pull-right btn btn-danger">DELETE</button>
             </div>
           </div>
         </div>
@@ -43,7 +45,8 @@
         <pre>{{selectedAssoc}}</pre>
       </div>
 
-      <textarea></textarea>
+      <textarea ng-model="selectedAssoc.displayText"></textarea>
+      <button ng-click="save()" class="btn btn-lg btn-success">Save</button>
     </div>
   </div>
 </div>
