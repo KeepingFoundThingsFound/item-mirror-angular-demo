@@ -19,7 +19,7 @@
               <span ng-show="!assoc.isGrouping" class="glyphicon glyphicon-file"></span>
             </div>
             <div class="col-md-10">
-              <h3>{{assoc.localItem}}</h3>
+              <h3>{{ matchFirstLn(assoc.displayText) }}</h3>
             </div>
           </div> <!-- row -->
           <div class="row buttons" ng-show="assoc.selected">
@@ -37,7 +37,7 @@
   </div>
 
   <!-- Association Editing Section -->
-  <div class="col-md-8">
+  <div class="col-md-4">
     <div class="editor">
       <h2>Editor</h2>
 
@@ -66,6 +66,27 @@
 
       <!-- This button resets the color by setting the value to null -->
       <button ng-click="selectedAssoc.customColor = null">Reset Color</button>
+    </div>
+  </div>
+
+  <!-- Phantom Creation Section -->
+  <div class="col-md-4">
+    <h2>Phantom Creator</h2>
+    <button ng-show="!addPhantom" ng-click="togglePhantom()" class="btn btn-default btn-lg">Add Phantom</button>
+
+    <div ng-show="addPhantom">
+
+      <form>
+        <label>Display Text</label>
+        <br/>
+        <textarea ng-model="phantomRequest.displayText"></textarea>
+        <br/>
+        <label>URL</label>
+        <br/>
+        <input ng-model="phantomRequest.itemURI" type="text">
+      </form>
+      <button ng-click="createPhantom()" class="btn btn-lg btn-default">Create</button>
+      <button ng-click="togglePhantom()" class="btn btn-lg btn-danger">Cancel</button>
     </div>
   </div>
 </div>

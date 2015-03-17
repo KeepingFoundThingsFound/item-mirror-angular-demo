@@ -53,5 +53,30 @@ angular.module('itemMirrorAngularDemoApp')
         $scope.selectedAssoc = assoc;
         $scope.selectedAssoc.selected = true;
       };
+
+      // Phantom Creation Section
+      $scope.addPhantom = false;
+
+      $scope.togglePhantom = function() {
+        $scope.addPhantom = !$scope.addPhantom;
+      };
+
+      $scope.phantomRequest = {
+        displayText: null,
+        itemURI: null,
+        localItemRequested: false
+      };
+
+      $scope.createPhantom = function() {
+        itemMirror.createAssociation($scope.phantomRequest).
+        then(assocScopeUpdate);
+      };
+
+      // Function used to show display text succinctly
+      $scope.matchFirstLn = function(str) {
+        var first = /.*/;
+        return first.exec(str)[0];
+      };
+
     });
   });
