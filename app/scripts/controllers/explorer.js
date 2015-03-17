@@ -42,7 +42,7 @@ angular.module('itemMirrorAngularDemoApp')
       $scope.save = function() {
         itemMirror.save().
         then(assocScopeUpdate);
-      }
+      };
 
       // Only one association is ever selected at a time. It has the boolean
       // selected property, to allow for unique styling

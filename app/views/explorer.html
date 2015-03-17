@@ -47,6 +47,12 @@
 
       <textarea ng-model="selectedAssoc.displayText"></textarea>
       <button ng-click="save()" class="btn btn-lg btn-success">Save</button>
+
+      <h2>Tags</h2>
+        <input type="text" ng-model="tagValue">
+        <button ng-click="selectedAssoc.addTag(tagValue)"><span class="glyphicon glyphicon-plus"></span></button>
+      <h3>Current Tags</h3>
+      <button ng-repeat="tag in selectedAssoc.listTags()">{{tag}}</button>
     </div>
   </div>
 </div>
