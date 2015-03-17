@@ -10,6 +10,7 @@
       <div ng-repeat="assoc in associations | filter:search.displayText"
            ng-click="select(assoc)">
         <div class="association"
+             ng-style="{ 'background-color': assoc.customColor }"
              ng-class="{'selected': assoc.selected}">
           <div class="row">
             <div class="col-md-2">
@@ -57,6 +58,14 @@
           <span class="glyphicon glyphicon-remove"></span>
         </button>
       </div>
+
+      <!-- Creates a binding to the custom namespace attribute -->
+      <input type="color"
+             ng-model="selectedAssoc.customColor"
+             ng-model-options="{ getterSetter: true }">
+
+      <!-- This button resets the color by setting the value to null -->
+      <button ng-click="selectedAssoc.customColor = null">Reset Color</button>
     </div>
   </div>
 </div>
