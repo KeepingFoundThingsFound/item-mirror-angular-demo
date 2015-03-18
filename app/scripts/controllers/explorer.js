@@ -44,6 +44,11 @@ angular.module('itemMirrorAngularDemoApp')
         then(assocScopeUpdate);
       };
 
+      $scope.refresh = function() {
+        itemMirror.refresh().
+        then(assocScopeUpdate);
+      }
+
       // Only one association is ever selected at a time. It has the boolean
       // selected property, to allow for unique styling
       $scope.select = function(assoc) {
@@ -55,12 +60,6 @@ angular.module('itemMirrorAngularDemoApp')
       };
 
       // Phantom Creation Section
-      $scope.addPhantom = false;
-
-      $scope.togglePhantom = function() {
-        $scope.addPhantom = !$scope.addPhantom;
-      };
-
       $scope.phantomRequest = {
         displayText: null,
         itemURI: null,
@@ -71,6 +70,21 @@ angular.module('itemMirrorAngularDemoApp')
         itemMirror.createAssociation($scope.phantomRequest).
         then(assocScopeUpdate);
       };
+
+      // Folder Creation Section
+      $scope.folderRequest = {
+        displayText: null,
+        localItem: null,
+        isGroupingItem: true
+      };
+
+      $scope.createFolder = function() {
+        itemMirror.createAssociation($scope.folderRequest).
+        then(assocScopeUpdate);
+      };
+
+      // default section for our editing panel
+      $scope.editSection = 'assoc-editor';
 
       // Function used to show display text succinctly
       $scope.matchFirstLn = function(str) {

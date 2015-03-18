@@ -3,40 +3,21 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
 @import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
 // endbower
 
-$color-primary-0: #FFC193;  /* Main Primary color */
-$color-primary-1: #FFEADB;
-$color-primary-2: #FFD4B5;
-$color-primary-3: #FFB076;
-$color-primary-4: #FFA05B;
-
-$color-secondary-1-0: #FFD093;  /* Main Secondary color (1) */
-$color-secondary-1-1: #FFEFDB;
-$color-secondary-1-2: #FFDFB5;
-$color-secondary-1-3: #FFC376;
-$color-secondary-1-4: #FFB85B;
-
-$color-secondary-2-0: #86BADE;  /* Main Secondary color (2) */
-$color-secondary-2-1: #CBDDE9;
-$color-secondary-2-2: #A5C9E2;
-$color-secondary-2-3: #6EB0DE;
-$color-secondary-2-4: #5AABE3;
-
-$color-complement-0: #7FDDD3; /* Main Complement color */
-$color-complement-1: #C8E8E5;
-$color-complement-2: #9FE1DA;
-$color-complement-3: #66DDD0;
-$color-complement-4: #50E2D2;
+@import "//fonts.googleapis.com/css?family=Open+Sans:300,400,700)";
 
 body {
-  background-color: $color-primary-1;
+  font-family: "Open Sans";
+  font-weight: 400;
+}
+
+h1, h2 {
+  font-weight: 300;
 }
 
 
 .association {
-  background-color: $color-secondary-1-0;
   padding: 5px 5px;
   border: 2px solid;
-  border-color: $color-secondary-1-4;
   margin: 0px 10px 10px 0px;
   box-shadow: 0px 5px 3px #AAA;
   transition: background-color 0.25s ease;
@@ -45,22 +26,17 @@ body {
     font-size: 175%;
 
     &.glyphicon-folder-close {
-      color: $color-secondary-2-4;
     }
 
     &.glyphicon-file {
-      color: $color-secondary-2-2;
     }
   }
 
   // The '&' symbol is because we want to OVERWRITE the same values as the
   // parent. Otherwise we won't get a change.
   &.selected {
-    background-color: $color-complement-0;
-    border-color: $color-complement-4;
 
     &:hover, &:active {
-      background-color: $color-complement-4
     }
   }
 
@@ -72,7 +48,6 @@ body {
   }
 
   &:hover, &:active {
-    background-color: $color-secondary-1-4;
   }
 }
 

@@ -36,18 +36,25 @@
     </div>
   </div>
 
+  <div class="col-md-6" ng-switch on="editSection">
+    <button class="btn-default btn btn-lg"
+            ng-click="editSection = 'assoc-editor'">Association Editor</button>
+    <button class="btn-default btn btn-lg"
+            ng-click="editSection = 'new-phantom'">Create Phantom</button>
+    <button class="btn-default btn btn-lg"
+            ng-click="editSection = 'new-folder'">Create Folder</button>
+
   <!-- Association Editing Section -->
-  <div class="col-md-4">
-    <div class="editor">
+  <div ng-switch-when="assoc-editor" class="association-editor">
+    <p class="lead" ng-hide="selectedAssoc">
+      Select an association to the left in order to edit it!
+    </p>
+    <div ng-if="selectedAssoc">
       <h2>Editor</h2>
 
-      <div ng-if="selectedAssoc">
-        <h3>{{selectedAssoc.localItem}}</h3>
-        <pre>{{selectedAssoc}}</pre>
-      </div>
+      <h3>{{selectedAssoc.localItem}}</h3>
 
       <textarea ng-model="selectedAssoc.displayText"></textarea>
-      <button ng-click="save()" class="btn btn-lg btn-success">Save</button>
 
       <h2>Tags</h2>
         <input type="text" ng-model="tagValue">
@@ -70,12 +77,8 @@
   </div>
 
   <!-- Phantom Creation Section -->
-  <div class="col-md-4">
-    <h2>Phantom Creator</h2>
-    <button ng-show="!addPhantom" ng-click="togglePhantom()" class="btn btn-default btn-lg">Add Phantom</button>
-
-    <div ng-show="addPhantom">
-
+  <div ng-switch-when="new-phantom" class="phantom">
+    <h2>New Phantom</h2>
       <form>
         <label>Display Text</label>
         <br/>
@@ -86,7 +89,27 @@
         <input ng-model="phantomRequest.itemURI" type="text">
       </form>
       <button ng-click="createPhantom()" class="btn btn-lg btn-default">Create</button>
-      <button ng-click="togglePhantom()" class="btn btn-lg btn-danger">Cancel</button>
+    </div>
+
+  <!-- Folder Creation Section -->
+  <div ng-switch-when="new-folder" class="folder">
+    <h2>New Folder</h2>
+      <form>
+        <label>Display Text</label>
+        <br/>
+        <textarea ng-model="folderRequest.displayText"></textarea>
+        <br/>
+        <label>Folder Name</label>
+        <br/>
+        <input ng-model="folderRequest.localItem" type="text">
+      </form>
+      <button ng-click="createFolder()" class="btn btn-lg btn-default">Create</button>
     </div>
   </div>
-</div>
+
+  <div class="col-md-2">
+    <button ng-click="save()" class="btn btn-lg btn-success">Save</button>
+    <button ng-click="refresh()" class="btn btn-lg btn-success">Refresh</button>
+  </div>
+
+  </div>
