@@ -20,6 +20,7 @@
             </div>
             <div class="col-md-10">
               <h3>{{ matchFirstLn(assoc.displayText) }}</h3>
+              <a ng-show="assoc.isPhantom" ng-href="{{assoc.associatedItem}}">{{ assoc.associatedItem }}</a>
             </div>
           </div> <!-- row -->
           <div class="row buttons" ng-show="assoc.selected">

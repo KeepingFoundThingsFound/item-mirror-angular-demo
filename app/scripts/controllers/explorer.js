@@ -47,7 +47,7 @@ angular.module('itemMirrorAngularDemoApp')
       $scope.refresh = function() {
         itemMirror.refresh().
         then(assocScopeUpdate);
-      }
+      };
 
       // Only one association is ever selected at a time. It has the boolean
       // selected property, to allow for unique styling
@@ -60,31 +60,54 @@ angular.module('itemMirrorAngularDemoApp')
       };
 
       // Phantom Creation Section
-      $scope.phantomRequest = {
-        displayText: null,
-        itemURI: null,
-        localItemRequested: false
-      };
+
+      // This is used to intially set the values, and reset them after we create a phantom.
+      // We don't want the same information stuck in those boxes after creating them
+      function resetPhantomRequest() {
+        $scope.phantomRequest.displayText = '';
+        $scope.phantomRequest.itemURI = '';
+        $scope.phantomRequest.localItemRequested = false;
+      }
+
+      $scope.phantomRequest = {};
+      resetPhantomRequest();
 
       $scope.createPhantom = function() {
         itemMirror.createAssociation($scope.phantomRequest).
-        then(assocScopeUpdate);
+        then( function() {
+          switchToAssocEditor();
+          assocScopeUpdate();
+          resetPhantomRequest();
+        });
       };
 
-      // Folder Creation Section
-      $scope.folderRequest = {
-        displayText: null,
-        localItem: null,
-        isGroupingItem: true
-      };
+      // Folder Creation Section, nearly the exact same as the phanbom request,
+      // with a few minor differences
+      function resetFolderRequest() {
+        $scope.folderRequest.displayText = '';
+        $scope.folderRequest.localItem = '';
+        $scope.folderRequest.isGroupingItem = true;
+      }
+
+      $scope.folderRequest = {};
+      resetFolderRequest();
 
       $scope.createFolder = function() {
         itemMirror.createAssociation($scope.folderRequest).
-        then(assocScopeUpdate);
+        then( function() {
+          switchToAssocEditor();
+          assocScopeUpdate();
+          resetFolderRequest();
+        });
       };
 
+
       // default section for our editing panel
-      $scope.editSection = 'assoc-editor';
+      function switchToAssocEditor() {
+        $scope.editSection = 'assoc-editor';
+      }
+
+      switchToAssocEditor();
 
       // Function used to show display text succinctly
       $scope.matchFirstLn = function(str) {

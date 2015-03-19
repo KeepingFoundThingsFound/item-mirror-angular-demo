@@ -199,7 +199,10 @@ angular.module('itemMirrorAngularDemoApp')
         var deferred = $q.defer();
 
         mirror.createAssociation(options, function(error, guid) {
-          if (error) { deferred.reject(error); }
+          if (error) {
+            deferred.reject(error);
+            console.log(error);
+          }
           else {
             // Add a new wrapped association
             associations.push( assocWrapper(guid) );
@@ -217,7 +220,9 @@ angular.module('itemMirrorAngularDemoApp')
 
         mirror.deleteAssociation(guid, function(error) {
           if (error) {
-            deferred.reject(error); }
+            deferred.reject(error);
+            console.log(error);
+          }
           else {
             var guids = associations.map(function(assoc) { return assoc.guid; });
             var delIdx = guids.indexOf(guid);
@@ -294,6 +299,8 @@ angular.module('itemMirrorAngularDemoApp')
       get displayName() { return mirror.getDisplayName(); },
       set displayName(name) { mirror.setDisplayName(name); },
 
+      get itemDescribed() { return mirror.getURIforItemDescribed(); },
+
       // A promise that completes after dropbox has authenticated, and
       // the initial root itemMirror has been created. This should
       // only be called once, preferably in some sort of start up area
@@ -318,6 +325,5 @@ angular.module('itemMirrorAngularDemoApp')
         return deferred.promise;
       },
 
-      get itemDescribed() { return mirror.getURIforItemDescribed(); }
     };
   }]);
